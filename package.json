@@ -1,0 +1,20 @@
+{
+  "name": "helloworld",
+  "version": "1.0.0",
+  "description": "A REST API using express.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "express",
+    "js"
+  ],
+  "author": "Andres Leal",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
