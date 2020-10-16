@@ -1,15 +1,16 @@
 const express = require("express");
 const pokemon = express.Router();
 
-const pk = require('../pokedex.json').pokemon;
+const db = require("../config/database.js"); 
 
 pokemon.post("/", (req, res, next) => {
     //return res.status(200).send("You are in /pokemon POST")
     return res.status(200).send(req.body)
 })
 
-pokemon.get("/", (req, res, next) => {
-    res.status(200).send(pk)
+pokemon.get("/", async (req, res, next) => {
+    const pkmn = await db.query("select * from pokemon")
+    return res.status(200).send(pkmn)
 })
 
 pokemon.get('/:id([0-9]{1,3})', (req, res, next) => {
