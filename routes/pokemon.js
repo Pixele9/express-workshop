@@ -4,7 +4,7 @@ const pokemon = express.Router();
 const db = require("../config/database.js"); 
 
 pokemon.post("/", (req, res, next) => {
-    //return res.status(200).send("You are in /pokemon POST")
+    // return res.status(200).send("You are in /pokemon POST")
     return res.status(200).send(req.body)
 })
 
