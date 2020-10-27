@@ -34,6 +34,27 @@ pokemon.delete("/:id([0-9]{1,3})", async (req, res, next) => {
     return res.status(404).json({ code: 404, message: "Pokemon not found" })
 })
 
+// UPDATE ALL FIELDS WITH PUT
+pokemon.put("/:id([0-9]{1,3})", async (req, res, next) => {
+    const { pok_name, pok_height, pok_weight, pok_base_experience } = req.body
+
+    if(pok_name && pok_height && pok_weight && pok_base_experience) {
+        let query = `update pokemon set pok_name='${pok_name}', pok_height='${pok_height}',`
+        query += `pok_weight='${pok_weight}', pok_base_experience='${pok_base_experience}' where pok_id='${req.params.id}';`
+
+        const rows = await db.query(query)
+        
+        if(rows.affectedRows == 1) {
+            return res.status(200).json({ code: 200, message: "Pokemon updated" })
+        }
+
+        return res.status(500).json({ code: 500, message: "Something went wrong" })
+    }
+    
+    return res.status(500).json({ code: 500, message: "Incomplete fields" }) 
+})
+
+
 pokemon.get("/", async (req, res, next) => {
     const pkmn = await db.query("select * from pokemon")
     return res.status(200).send({ code: 200, message: pkmn })
