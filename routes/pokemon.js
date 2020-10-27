@@ -22,6 +22,18 @@ pokemon.post("/", async (req, res, next) => {
     return res.status(500).json({ code: 500, message: "Incomplete fields" }) 
 })
 
+pokemon.delete("/:id([0-9]{1,3})", async (req, res, next) => {
+    const query = `delete from pokemon where pok_id=${req.params.id}`
+
+    const rows = await db.query(query)
+
+    if(rows.affectedRows == 1) {
+        return res.status(200).json({ code: 200, message: "Pokemon deleted succesfully" })
+    }
+
+    return res.status(404).json({ code: 404, message: "Pokemon not found" })
+})
+
 pokemon.get("/", async (req, res, next) => {
     const pkmn = await db.query("select * from pokemon")
     return res.status(200).send({ code: 200, message: pkmn })
