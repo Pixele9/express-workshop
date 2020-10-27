@@ -54,6 +54,21 @@ pokemon.put("/:id([0-9]{1,3})", async (req, res, next) => {
     return res.status(500).json({ code: 500, message: "Incomplete fields" }) 
 })
 
+// UPDATE ONLY SPECIFIC VALUES WITH PATCH
+pokemon.patch("/:id([0-9]{1,3})", async (req, res, next) => {
+
+    if(req.body.pok_name) {
+        let query = `UPDATE pokemon SET pok_name='${req.body.pok_name}' WHERE pok_id='${req.params.id}'`
+
+        const rows = await db.query(query)
+        
+        if(rows.affectedRows == 1) {
+            return res.status(200).json({ code: 200, message: "Pokemon updated" })
+        }
+    }
+
+    return res.status(500).json({ code: 500, message: "Something went wrong :(" })
+})
 
 pokemon.get("/", async (req, res, next) => {
     const pkmn = await db.query("select * from pokemon")
