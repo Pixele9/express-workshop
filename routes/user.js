@@ -20,4 +20,26 @@ user.post("/", async (req, res, next) => {
     return res.status(500).json({code:500, message: "Incomplete fields"})
 })
 
+user.post("/login", async (req, res, next) => {
+    const { user_mail, user_password} = req.body
+    const query = `select * from user where user_mail = '${user_mail}' and user_password = '${user_password}';` 
+    const rows = await db.query(query)
+    
+    if(user_mail && user_password) {
+        if(rows.length == 1) {
+            return res.status(200).json({ code: 200, message: "JWT here" })
+        } else {
+            return res.status(401).json({ code: 401, message: "Mail or password incorrect" })
+        }
+    }
+    return res.status(500).json({ code: 500, message: "Incomplte fields" })
+})
+
+user.get("/", async (req, res, next) => {
+    const query = "select * from user;"
+    const rows = await db.query(query)
+    
+    return res.status(200).json({ code: 200, message: rows })
+})
+
 module.exports = user
