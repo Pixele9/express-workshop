@@ -77,9 +77,9 @@ pokemon.get("/", async (req, res, next) => {
 
 pokemon.get('/:id([0-9]{1,3})', async (req, res, next) => {
     let pokeID = req.params.id
-    if (pokeID < pokes.length && pokeID > 0) {
+    if (pokeID > 0 && pokeID < 722) {
         const pkmn = await db.query("select * from pokemon where pok_id="+pokeID+";")
-        return res.status(200).send({ code: 404, message: pkmn })
+        return res.status(200).send({ code: 200, message: pkmn })
     }
     
     return res.status(404).send({ code: 404, message: "Pokemon not found"})    

@@ -1,22 +1,27 @@
+// Dependencies
 const morgan = require('morgan');
 const express = require('express');
 const app = express();
+
+// Routers
 const pokemon = require('./routes/pokemon');
 const user = require('./routes/user');
+
+// Middleware
+const auth = require('./middleware/auth');
+const notFound = require('./middleware/notFound');
+const home = require('./middleware/index');
 
 app.use(morgan("dev"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.get("/", (req, res, next) => {
-    return res.status(200).send({ code: 1, message: "Welcome to pokedex"})
-})
+app.get("/", home)
 
-app.use("/pokemon", pokemon)
 app.use("/user", user)
+app.use(auth)
+app.use("/pokemon", pokemon)
 
-app.use((req, res, next) => {
-    return res.status(404).json({ code: 404, message: "URL not found" })
-})
+app.use(notFound)
 
-app.listen(process.env.port || 3000, () => console.log("server is running..."));
+app.listen(process.env.port || 4000, () => console.log("server is running..."));
